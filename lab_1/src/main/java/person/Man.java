@@ -10,15 +10,14 @@ public class Man {
 
     private static MyArrayList<Person> array = new MyArrayList<Person>();
     private Man man;
-    static int count = -1;
     static int currentCount = -1;
     static Scanner in = new Scanner(System.in);
-    private int capacity;
+    private int capacity = 2;
 
 
-    public Man(int capacity) {
+    public Man() {
         this.capacity = capacity;
-        this.array = new MyArrayList<Person>(capacity);
+        this.array = new MyArrayList<Person>();
     }
 
     public void addPerson(Person p) {
@@ -41,65 +40,67 @@ public class Man {
         return false;
     }
 
-    public static void inputPerson(Man man, int count) {
+    public static void inputPerson(Man man) {
+        int i = array.size();
+        i++;
+        System.out.println("Введите данные для " + i + " человека");
+        i--;
 
-        for (int i = 0; i < count; i++) {
-            i++;
-            System.out.println("Введите данные для " + i + " человека");
-            i--;
+        String name;
+        do {
+            System.out.println("Введите имя");
+            assert false;
+            name = in.nextLine();
+        } while (!isCorrect(name.trim().toLowerCase()));
 
-            String name;
-            do {
-                System.out.println("Введите имя");
-                assert false;
-                name = in.nextLine();
-            } while (!isCorrect(name.trim().toLowerCase()));
+        String surname;
+        do {
+            System.out.println("Введите фамилию");
+            assert false;
+            surname = in.nextLine();
+        } while (!isCorrect(surname.trim().toLowerCase()));
 
-            String surname;
-            do {
-                System.out.println("Введите фамилию");
-                assert false;
-                surname = in.nextLine();
-            } while (!isCorrect(surname.trim().toLowerCase()));
+        String gender;
+        int selectGender;
+        do {
+            System.out.println("Введите пол: \n0 - Мужской \n1 - Женский ");
+            assert false;
+            gender = in.nextLine().trim();
+            selectGender = Integer.parseInt(gender);
+        } while (selectGender < 0 || selectGender > 1);
 
-            String gender;int selectGender;
-            do {
-                System.out.println("Введите пол: \n0 - Мужской \n1 - Женский ");
-                assert false;
-                gender = in.nextLine().trim();
-                selectGender = Integer.parseInt(gender);
-            } while (selectGender < 0 || selectGender > 1);
+        LocalDate currentDate = LocalDate.now();
+        String yyyy;
+        int iYear;
+        do {
+            System.out.println("Введите год рождения");
+            assert false;
+            yyyy = in.nextLine().trim();
+            iYear = Integer.parseInt(yyyy);
+        } while (iYear < 0 || iYear > currentDate.getYear());
 
-            LocalDate currentDate = LocalDate.now();
-            String yyyy;int iYear;
-            do {
-                System.out.println("Введите год рождения");
-                assert false;
-                yyyy = in.nextLine().trim();
-                iYear = Integer.parseInt(yyyy);
-            } while (iYear < 0 || iYear > currentDate.getYear());
+        String mm;
+        int iMonth;
+        do {
+            System.out.println("Введите месяц рождения");
+            assert false;
+            mm = in.nextLine().trim();
+            iMonth = Integer.parseInt(mm);
+        } while (iMonth < 0 || iMonth > 12);
 
-            String mm;int iMonth;
-            do {
-                System.out.println("Введите месяц рождения");
-                assert false;
-                mm = in.nextLine().trim();
-                iMonth = Integer.parseInt(mm);
-            } while (iMonth < 0 || iMonth > 12);
+        String dd;
+        int iDay = 1;
+        Calendar mycal = new GregorianCalendar(iYear, iMonth - 1, iDay);
+        int daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        do {
+            System.out.println("Введите день рождения");
+            assert false;
+            dd = in.nextLine().trim();
+            iDay = Integer.parseInt(dd);
+        } while (iDay < 0 || iDay > daysInMonth);
 
-            String dd;int iDay=1;
-            Calendar mycal = new GregorianCalendar(iYear, iMonth-1, iDay);
-            int daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH);
-            do {
-                System.out.println("Введите день рождения");
-                assert false;
-                dd = in.nextLine().trim();
-                iDay = Integer.parseInt(dd);
-            } while (iDay < 0 || iDay > daysInMonth );
-
-            Person p = new Person(name, surname, selectGender, iYear, iMonth, iDay);
-            man.addPerson(p);
-        }
+        Person p = new Person(name, surname, selectGender, iYear, iMonth, iDay);
+        man.addPerson(p);
     }
 
     public static boolean tryGet() {
@@ -114,17 +115,17 @@ public class Man {
         System.out.println("Фамилия: " + p.getSurName());
         System.out.println("Дата рождения: " + p.getBirthday());
         System.out.println("Пол: " + p.toGender());
-        System.out.println("Возравст: " + p.getAge());
+        System.out.println("Возраст: " + p.getAge());
     }
 
     public static void outputAllPerson() {
         if (!tryGet()) {
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < array.size(); i++)
                 outputPerson(i);
         } else System.out.println("Список людей пуст ");
     }
 
-    public static void helpMenu() {
+    public static void helpMenu(Man man) {
         int selectedNumber = -1;
         do {
             System.out.println("Выбор: ");
@@ -137,16 +138,16 @@ public class Man {
             String line = in.nextLine();
             selectedNumber = Integer.parseInt(line.trim());
         } while (selectedNumber < 0 || selectedNumber > 4);
-        mainMenu(selectedNumber);
+        mainMenu(selectedNumber, man);
     }
 
-    public static void mainMenu(int selectValue) {
+    public static void mainMenu(int selectValue, Man man) {
 
         switch (selectValue) {
             case 1: {
-                Man man = new Man(count);
-                inputPerson(man, count);
-                helpMenu();
+
+                inputPerson(man);
+                helpMenu(man);
                 break;
             }
             case 2: {
@@ -156,8 +157,9 @@ public class Man {
                     String line = in.nextLine();
                     currentCount = Integer.parseInt(line) - 1;
                 } while (currentCount < 0 || currentCount > array.size());
-                outputAllPerson();
-                helpMenu();
+                outputPerson(currentCount);
+//                outputAllPerson();
+                helpMenu(man);
                 break;
             }
             case 3: {
@@ -166,12 +168,12 @@ public class Man {
                 String linedel = in.nextLine();
                 currentCount = Integer.parseInt(linedel);
                 delPersonById(currentCount);
-                helpMenu();
+                helpMenu(man);
                 break;
             }
             case 4: {
                 outputAllPerson();
-                helpMenu();
+                helpMenu(man);
                 break;
             }
             case 0:
@@ -181,22 +183,7 @@ public class Man {
     }
 
     public static void main(String[] args) {
-        Scanner myScanner = null;
-        while (true) {
-            System.out.println("Сколько человек вы хотите добавить?");
-            assert false;
-            String line = in.nextLine();
-            try {
-                count = Integer.parseInt(line);
-                if (count < 0)
-                    System.out.println("Введите положительное значение больше 0");
-                else
-                    break;
-            } catch (NumberFormatException e) {
-                System.out.println("Введено не число");
-            }
-        }
-
-        helpMenu();
+        Man man = new Man();
+        helpMenu(man);
     }
 }
