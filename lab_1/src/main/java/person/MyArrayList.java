@@ -1,6 +1,11 @@
 package person;
 
-public class MyArrayList<E> {
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+public class MyArrayList<E> implements Iterable<E>, Collection<E> ,Cloneable {
 
     private final int INIT_SIZE = 16;
     private final int CUT_RATE = 4;
@@ -16,31 +21,28 @@ public class MyArrayList<E> {
         this.array = new Object[INIT_SIZE];
     }
 
-    /*
-    Добавляет новый элемент в список. При достижении размера внутреннего
-    массива происходит его увеличение в два раза.
-    */
-    public void add(E item) {
+    /**
+     * <b>Add new elem in list</b>
+     *Upon reaching the size of the inner tThe array is doubled in size.
+     * @param item
+     */
+    public boolean add(E item) {
         if (pointer == array.length - 1)
             resize(array.length * 2); // увеличу в 2 раза, если достигли границ
         array[pointer++] = item;
+        return true;
     }
 
-    /*
-    Возвращает элемент списка по индексу.
-    */
     public E get(int index) {
         return (E) array[index];
     }
 
-    /*
-    *
-    Удаляет элемент списка по индексу. Все элементы справа от удаляемого
-    перемещаются на шаг налево. Если после удаления элемента количество
-    элементов стало в CUT_RATE раз меньше чем размер внутреннего массива,
-    то внутренний массив уменьшается в два раза, для экономии занимаемого
-    места.
-    */
+    /**
+     * <b>Delete elem in list by index</b>
+     *If after removing an item elements in CUT_RATE times smaller than the size of the internal array,
+     * then the internal array is halved, to save occupied places.
+     * @param index
+     */
     public void remove(int index) {
         for (int i = index; i < pointer; i++)
             array[i] = array[i + 1];
@@ -51,16 +53,184 @@ public class MyArrayList<E> {
         // длина массива, то уменьшу в два раза
     }
 
-    /*Возвращает количество элементов в списке*/
     public int size() {
         return pointer;
     }
 
-    /*Вспомогательный метод для масштабирования.*/
+    public int indexOf(Object o) {
+        if (o == null) {
+            for (int i = 0; i < pointer; i++)
+                if (array[i]==null)
+                    return i;
+        } else {
+            for (int i = 0; i < pointer; i++)
+                if (o.equals(array[i]))
+                    return i;
+        }
+        return -1;
+    }
+
     private void resize(int newLength) {
         Object[] newArray = new Object[newLength];
         System.arraycopy(array, 0, newArray, 0, pointer);
         array = newArray;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        if (o == null) {
+            for (int index = 0; index < pointer; index++)
+                if (array[index] == null) {
+                    fastRemove(index);
+                    return true;
+                }
+        } else {
+            for (int index = 0; index < pointer; index++)
+                if (o.equals(array[index])) {
+                    fastRemove(index);
+                    return true;
+                }
+        }
+        return false;
+    }
+
+    private void fastRemove(int index) {
+//        modCount++;
+        int numMoved = pointer - index - 1;
+        if (numMoved > 0)
+            System.arraycopy(array, index+1, array, index,
+                    numMoved);
+        array[--pointer] = null; // Let gc do its work
+    }
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends E> c) {
+        Object[] a = c.toArray();
+        int numNew = a.length;
+        if (pointer == array.length - 1)
+            resize(array.length * 2);
+        System.arraycopy(a, 0, array, pointer, numNew);
+        pointer += numNew;
+        return numNew != 0;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        return batchRemove(c, false);
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        return batchRemove(c, true);
+    }
+
+    private boolean batchRemove(Collection<?> c, boolean complement) {
+        final Object[] elementData = this.array;
+        int r = 0, w = 0;
+        boolean modified = false;
+        try {
+            for (; r < pointer; r++)
+                if (c.contains(elementData[r]) == complement)
+                    elementData[w++] = elementData[r];
+        } finally {
+            // Preserve behavioral compatibility with AbstractCollection,
+            // even if c.contains() throws.
+            if (r != pointer) {
+                System.arraycopy(elementData, r,
+                        elementData, w,
+                        pointer - r);
+                w += pointer - r;
+            }
+            if (w != pointer) {
+                for (int i = w; i < pointer; i++)
+                    elementData[i] = null;
+//                modCount += pointer - w;
+                pointer = w;
+                modified = true;
+            }
+        }
+        return modified;
+    }
+
+    @Override
+    public void clear() {
+//        modCount++;
+
+        for (int i = 0; i < pointer; i++)
+            array[i] = null;
+
+        pointer = 0;
+    }
+
+
+
+    @Override
+    public boolean isEmpty() {
+        return pointer == 0;
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        return indexOf(o) >= 0;
+    }
+
+
+
+    @Override
+    public Iterator<E> iterator() {
+        Iterator<E> it = new Iterator<E>() {
+
+            private int currentIndex = 0;
+
+            @Override
+            public boolean hasNext() {
+                return currentIndex < pointer && array[currentIndex] != null;
+            }
+
+            @Override
+            public E next() {
+                return (E) array[currentIndex++];
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+        return it;
+    }
+
+    @Override
+    public Object[] toArray() {
+        return Arrays.copyOf(array, pointer);
+//        return new Object[0];
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a) {
+        if (a.length < pointer)
+            // Make a new array of a's runtime type, but my contents:
+            return (T[]) Arrays.copyOf(array, pointer, a.getClass());
+        System.arraycopy(array, 0, a, 0, pointer);
+        if (a.length > pointer)
+            a[pointer] = null;
+        return a;
+    }
+
+    public Object clone() {
+        try {
+            @SuppressWarnings("unchecked")
+            MyArrayList<E> v = (MyArrayList<E>) super.clone();
+            v.array = Arrays.copyOf(array, pointer);
+            return v;
+        } catch (CloneNotSupportedException e) {
+            // this shouldn't happen, since we are Cloneable
+            throw new InternalError();
+        }
     }
 }
 

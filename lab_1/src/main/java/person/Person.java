@@ -15,9 +15,9 @@ package person;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Scanner;
+import java.util.Comparator;
 
-class Person {
+class Person implements Comparable<Person> {
 
     private static int idCounter = 0;
     private int id;
@@ -25,6 +25,21 @@ class Person {
     private String surName;
     private GenderEnum gender;
     private LocalDate birthday;
+
+    @Override
+    public int compareTo(Person o) {
+        return this.getId() - o.getId();
+    }
+    public static final Comparator<Person> COMPARE_BY_COUNT = new Comparator<Person>() {
+        @Override
+        public int compare(Person lhs, Person rhs) {
+            return lhs.getId() - rhs.getId();
+        }
+    };
+
+//    public boolean CompareTo(MyArrayList item) {
+//        return true;
+//    }
 
 
     public enum GenderEnum {
@@ -55,8 +70,6 @@ class Person {
 
         LocalDate LDate = LocalDate.of(iYear, iMonth, iDay);
         this.birthday = LDate;
-
-//        this.Age = getCalculateAge(LDate);
 
     }
 
@@ -109,21 +122,9 @@ class Person {
         }
     }
 
-
-
-
     public String toGender() {
         return "Пол \"" + gender + "\"";
     }
-
-//    public static int getCalculateAge(LocalDate birthDate) {
-//        LocalDate currentDate = LocalDate.now();
-//        if ((birthDate != null) && (currentDate != null)) {
-//            return Period.between(birthDate, currentDate).getYears();
-//        } else {
-//            return 0;
-//        }
-//    }
 
     public void display() {
         System.out.println("Name: " + name);
