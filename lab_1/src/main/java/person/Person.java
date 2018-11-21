@@ -15,9 +15,9 @@ package person;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Comparator;
+import java.util.Objects;
 
-class Person implements Comparable<Person> {
+public class Person {
 
     private static int idCounter = 0;
     private int id;
@@ -26,39 +26,8 @@ class Person implements Comparable<Person> {
     private GenderEnum gender;
     private LocalDate birthday;
 
-    @Override
-    public int compareTo(Person o) {
-        return this.getId() - o.getId();
-    }
-    public static final Comparator<Person> COMPARE_BY_COUNT = new Comparator<Person>() {
-        @Override
-        public int compare(Person lhs, Person rhs) {
-            return lhs.getId() - rhs.getId();
-        }
-    };
 
-//    public boolean CompareTo(MyArrayList item) {
-//        return true;
-//    }
-
-
-    public enum GenderEnum {
-        MAN("Мужской"),
-        WOMAN("Женский");
-
-        private final String gender;
-
-        GenderEnum(String gender) {
-            this.gender = gender;
-        }
-
-        @Override
-        public String toString() {
-            return gender;
-        }
-    }
-
-    public Person(String name, String surname, int gen, int iYear, int iMonth, int iDay) {
+    public Person(String name, String surname, int gen,LocalDate lDate) {
 
         idCounter++;
         id = idCounter;
@@ -68,8 +37,7 @@ class Person implements Comparable<Person> {
         GenderEnum g = gen == 0 ? GenderEnum.MAN : GenderEnum.WOMAN;
         this.gender = g;
 
-        LocalDate LDate = LocalDate.of(iYear, iMonth, iDay);
-        this.birthday = LDate;
+        this.birthday = lDate;
 
     }
 
@@ -126,7 +94,39 @@ class Person implements Comparable<Person> {
         return "Пол \"" + gender + "\"";
     }
 
+    public GenderEnum getGender() {
+        return gender;
+    }
+
     public void display() {
         System.out.println("Name: " + name);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person p = (Person) o;
+        return Objects.equals(getName(), p.getName()) &&
+                Objects.equals(getSurName(), p.getSurName()) &&
+                Objects.equals(gender,p.gender) &&
+                Objects.equals(getBirthday(), p.getBirthday());
+
+//                getGender() == p.getGender();
+    }
+    @Override
+    public String toString() {
+        return "{" +
+                "id=" + id +
+                ", surName='" + surName + '\'' +
+                ", name='" + name + '\'' +
+                ", birthday=" + birthday + '\'' +
+                ", gender=" + gender +
+                '}';
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getSurName(), getGender(),getBirthday());
+    }
+
 }
