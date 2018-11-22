@@ -1,19 +1,31 @@
 package Main;
 
-
 import java.util.Scanner;
 
-public class InputCorrect {
+/**
+ * InputCorrect - class help correct input message from user
+ */
+class InputCorrect {
 
+    /**
+     * inpputCorrect - object help validate imput
+     */
     static Scanner in = new Scanner(System.in);
-    public boolean isCorrect(String line) {
-        if (line.matches("^[a-z]+$")) {
-            return true;
-        }
-        return false;
+
+    /**
+     * @param line - input user str
+     * @return boolean
+     */
+    private boolean isCorrect(String line) {
+        return line.matches("^[a-z]+$");
     }
 
-    public String inputString(String message) {
+    /**
+     * helper input str message
+     * @param message - input user str
+     * @return string
+     */
+    String inputString(String message) {
         String name;
         do {
             System.out.println(message);
@@ -23,7 +35,14 @@ public class InputCorrect {
         return name;
     }
 
-    public int inputInteger(String message, int leftSide, int rightSide) {
+    /**
+     * helper input imt message
+     * @param message   - input user str
+     * @param leftSide  - left side for input
+     * @param rightSide - right side for input
+     * @return int
+     */
+    int inputInteger(String message, int leftSide, int rightSide) {
         String gender;
         int selectGender;
         do {
@@ -35,7 +54,12 @@ public class InputCorrect {
         return selectGender;
     }
 
-    public static Integer tryParse(String text) {
+    /**
+     * try to cast the entered message to the type of int
+     * @param text input user text
+     * @return int or exception
+     */
+    private static Integer tryParse(String text) {
         try {
             return Integer.parseInt(text);
         } catch (NumberFormatException e) {
