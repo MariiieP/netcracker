@@ -7,6 +7,11 @@ import java.util.Comparator;
 
 public class MergeSorter implements ISorter {
 
+    /**
+     * sort Shella!!!!!!!!!!!
+     * @param arr repositories which we sort
+     * @param sorter -Comparator<Person> by which we sort
+     */
     @Override
     public void sort(MyArrayList arr, Comparator<Person> sorter) {
         int j;
