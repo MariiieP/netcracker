@@ -1,5 +1,6 @@
 package Checkers;
 
+import org.apache.log4j.Logger;
 import person.Person;
 
 /**
@@ -8,6 +9,7 @@ import person.Person;
  */
 public class PersonAgeCheck implements Checker {
 
+    private static final Logger logger = Logger.getLogger(Checker.class);
     /**
      * override method for search person in repository
      * @param findPerson - object type Person who are looking for
@@ -16,6 +18,7 @@ public class PersonAgeCheck implements Checker {
      */
     @Override
     public boolean check(Person findPerson, Object obj) {
+        logger.debug("method check age invoked with params: " + findPerson + "and " + obj);
         return Integer.valueOf(findPerson.getAge()).equals(obj);
     }
 

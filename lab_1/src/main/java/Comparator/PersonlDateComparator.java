@@ -1,5 +1,6 @@
 package Comparator;
 
+import org.apache.log4j.Logger;
 import person.Person;
 
 import java.util.Comparator;
@@ -9,6 +10,7 @@ import java.util.Comparator;
  */
 public class PersonlDateComparator  implements Comparator<Person> {
 
+    private static final Logger logger = Logger.getLogger(Comparator.class);
     /**
      * method of comparing two people
      * @param obj1 - first person
@@ -20,6 +22,7 @@ public class PersonlDateComparator  implements Comparator<Person> {
     @Override
     public int compare(Person obj1, Person obj2)
     {
+        logger.debug("method compare on date invoked with params: " + obj1 + "and " + obj2);
         return obj1.getBirthday().compareTo(obj2.getBirthday());
     }
 

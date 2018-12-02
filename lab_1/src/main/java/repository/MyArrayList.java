@@ -4,6 +4,7 @@ import Checkers.Checker;
 import Checkers.PersonAgeCheck;
 import Checkers.PersonNameCheck;
 import Checkers.PersonlDateCheck;
+import org.apache.log4j.Logger;
 import person.Person;
 import sorter.BubleSorter;
 import sorter.ISorter;
@@ -18,6 +19,8 @@ import java.util.Comparator;
  * There are also overrides methods equals and hash code
  */
 public class MyArrayList {
+
+    private static final Logger logger = Logger.getLogger(MyArrayList.class);
 
     /**
      * array mas that stores specific objects (people)
@@ -35,6 +38,7 @@ public class MyArrayList {
      * full constructor for create object type MyArrayList
      */
     public MyArrayList() {
+        logger.debug("init repository for persons without params");
         arrayPerson = new Person[0];
         count = 0;
         sorter = new BubleSorter();
@@ -45,6 +49,7 @@ public class MyArrayList {
      * @param array
      */
     public MyArrayList(Person[] array) {
+        logger.debug("init repository for persons with params");
         arrayPerson = array;
         count = array.length;
         sorter = new BubleSorter();
@@ -55,6 +60,7 @@ public class MyArrayList {
      * @return int count
      */
     public int Count() {
+        logger.debug("return count persons in list");
         return count;
     }
 
@@ -64,7 +70,7 @@ public class MyArrayList {
      * @return boolean (true - success, false - abort)
      */
     public boolean add(Person item) {
-
+        logger.debug("add persons in repository");
             if (count == arrayPerson.length )
                 resize(arrayPerson.length +10);
             arrayPerson[count] = item;
@@ -78,6 +84,7 @@ public class MyArrayList {
      * return - void
      */
     private void resize(int newLength) {
+        logger.debug("resize repository capacity");
         Person[] newArray = new Person[newLength];
         System.arraycopy(arrayPerson, 0, newArray, 0, count);
         arrayPerson = newArray;
@@ -89,6 +96,7 @@ public class MyArrayList {
      * @return boolesb (true - success, false - abort)
      */
     public boolean remove(Person personDelete) {
+        logger.debug("remove persons in repository for object");
         if (personDelete == null) {
             for (int index = 0; index < count; index++)
                 if (arrayPerson[index] == null) {
@@ -110,7 +118,7 @@ public class MyArrayList {
      * @param index - number object in array mas
      */
     private void fastRemove(int index) {
-//        modCount++;
+        logger.debug("fastRemove persons in repository for index object");
         int numMoved = count - index - 1;
         if (numMoved > 0)
             System.arraycopy(arrayPerson, index + 1, arrayPerson, index,
@@ -122,7 +130,9 @@ public class MyArrayList {
      * removes a person from the repository
      * @param index - number object for delete
      */
-    public void removeAt(int index) {
+    public void removeAt(int index)
+    {
+        logger.debug("removeAt persons in repository for index object");
         fastRemove(index);
     }
 
@@ -131,7 +141,9 @@ public class MyArrayList {
      * @param index - int number object in array
      * @return search person
      */
-    public Person get(int index) {
+    public Person get(int index)
+    {
+        logger.debug("return persons in repository for index object");
         return arrayPerson[index];
     }
 
@@ -140,7 +152,9 @@ public class MyArrayList {
      * @param index - int number object in array
      * @param p - object who want to put
      */
-    public void set(int index, Person p) {
+    public void set(int index, Person p)
+    {
+        logger.debug("set persons in repository");
         arrayPerson[index] = p;
     }
 
@@ -151,6 +165,7 @@ public class MyArrayList {
      * @return new array list which contains only those objects that satisfy the search condition
      */
     private  MyArrayList find(Checker checker, Object obj) {
+        logger.debug("find persons in repository");
         MyArrayList findPerson = new MyArrayList();
         for (Person p : arrayPerson) {
             if (p != null){
@@ -167,7 +182,9 @@ public class MyArrayList {
      * @param name - field string name
      * @return new array list which contains only those objects that satisfy the search condition
      */
-    public MyArrayList findOn(String name) {
+    public MyArrayList findOn(String name)
+    {
+        logger.debug("findOn persons in repository on name");
         return find(new PersonNameCheck(), name);
     }
 
@@ -176,7 +193,9 @@ public class MyArrayList {
      * @param lDate - field Local Date
      * @return new array list which contains only those objects that satisfy the search condition
      */
-    public MyArrayList findOn(LocalDate lDate) {
+    public MyArrayList findOn(LocalDate lDate)
+    {
+        logger.debug("findOn persons in repository on date");
         return find(new PersonlDateCheck(), lDate);
     }
 
@@ -185,7 +204,9 @@ public class MyArrayList {
      * @param age - field int age
      * @return new array list which contains only those objects that satisfy the search condition
      */
-    public MyArrayList findOn(int age) {
+    public MyArrayList findOn(int age)
+    {
+        logger.debug("findOn persons in repository on age");
         return find(new PersonAgeCheck(), age);
     }
 
@@ -195,6 +216,7 @@ public class MyArrayList {
      */
     @Override
     public String toString() {
+        logger.debug("convert persons repository  to string");
         return "MyArrayList{" +
                 "arrayPerson=" + Arrays.toString(arrayPerson) +
                 '}';
@@ -207,6 +229,7 @@ public class MyArrayList {
      */
     @Override
     public boolean equals(Object obj) {
+        logger.debug("method equals invoked with params: " + obj);
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         MyArrayList that = (MyArrayList) obj;
@@ -218,14 +241,14 @@ public class MyArrayList {
      * @return hash code object
      */
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
+        logger.debug("method hashCode invoked");
         return Arrays.hashCode(arrayPerson);
     }
 
-//    public void sortBy(Comparator<Human> comparator) {
-//        sorter.sort(this, comparator);
-//
     public void sortBy(Comparator<Person> comparator) {
+        logger.debug("find persons in repository");
         sorter.sort(this, comparator);
         }
 

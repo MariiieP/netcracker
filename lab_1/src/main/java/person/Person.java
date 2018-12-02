@@ -13,9 +13,13 @@
 */
 package person;
 
+//import com.sun.istack.internal.resources.Logger;
+import org.apache.log4j.Logger;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Objects;
+//import java.util.resources.Logger;
 
 /**
  * Person class stores an object with fields:
@@ -30,6 +34,8 @@ public class Person {
     private GenderEnum gender;
     private LocalDate birthday;
 
+    private static final Logger logger = Logger.getLogger(Person.class);
+
     /**
      * constructor for create object type Person
      * with id which stores the object number
@@ -39,6 +45,7 @@ public class Person {
      * @param lDate   - type LocalDate
      */
     public Person(String name, String surname, int gen, LocalDate lDate) {
+        logger.debug("init repository for person without params");
 
         idCounter++;
         id = idCounter;
@@ -57,6 +64,7 @@ public class Person {
      * @return int id
      */
     public static int getIdCounter() {
+        logger.debug("return idCounter");
         return idCounter;
     }
 
@@ -65,6 +73,7 @@ public class Person {
      * @param idCounter int id
      */
     public static void setIdCounter(int idCounter) {
+        logger.debug("set id of person: " + idCounter);
         Person.idCounter = idCounter;
     }
 
@@ -73,6 +82,7 @@ public class Person {
      * @return int id
      */
     public int getId() {
+        logger.debug("return id");
         return id;
     }
 
@@ -81,6 +91,7 @@ public class Person {
      * @return int id
      */
     public void setId(int id) {
+        logger.debug("set id of person: " + id);
         this.id = id;
     }
 
@@ -89,6 +100,7 @@ public class Person {
      * @return string name
      */
     public String getName() {
+        logger.debug("get name of person");
         return name;
     }
 
@@ -97,6 +109,7 @@ public class Person {
      * @param name string name
      */
     public void setName(String name) {
+        logger.debug("set name of person: " + name);
         this.name = name;
     }
 
@@ -105,6 +118,7 @@ public class Person {
      * @return string surName
      */
     public String getSurName() {
+        logger.debug("get surName of person");
         return surName;
     }
 
@@ -113,6 +127,7 @@ public class Person {
      * @param surName string surName
      */
     public void setSurName(String surName) {
+        logger.debug("set name of person: " + surName);
         this.surName = surName;
     }
 
@@ -121,6 +136,7 @@ public class Person {
      * @return LocalDate birthday
      */
     public LocalDate getBirthday() {
+        logger.debug("get date of Birthday of person");
         return birthday;
     }
 
@@ -129,6 +145,7 @@ public class Person {
      * @param birthday LocalDate birthday
      */
     public void setBirthday(LocalDate birthday) {
+        logger.debug("set date of birthday of person: " + birthday);
         this.birthday = birthday;
     }
 
@@ -137,6 +154,7 @@ public class Person {
      * @return int age
      */
     public int getAge() {
+        logger.debug("get age of person");
         LocalDate currentDate = LocalDate.now();
         if ((birthday != null) && (currentDate != null)) {
             return Period.between(birthday, currentDate).getYears();
@@ -150,6 +168,7 @@ public class Person {
      * @return sex + gender
      */
     public String toGender() {
+        logger.debug("convert gender to string");
         return "Пол \"" + gender + "\"";
     }
 
@@ -159,6 +178,7 @@ public class Person {
      * @see GenderEnum
      */
     public GenderEnum getGender() {
+        logger.debug("get gender of person");
         return gender;
     }
 
@@ -169,6 +189,7 @@ public class Person {
      */
     @Override
     public boolean equals(Object o) {
+        logger.debug("method equals invoked with params: " + o);
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person p = (Person) o;
@@ -185,6 +206,7 @@ public class Person {
      */
     @Override
     public String toString() {
+        logger.debug("convert person to string");
         return "[" +
                 "id=" + id +
                 ", surName='" + surName + '\'' +
@@ -200,6 +222,7 @@ public class Person {
      */
     @Override
     public int hashCode() {
+        logger.debug("method hashCode invoked");
         return Objects.hash(getName(), getSurName(), getGender(), getBirthday());
     }
 

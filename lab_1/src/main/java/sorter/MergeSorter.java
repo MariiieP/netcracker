@@ -1,11 +1,14 @@
 package sorter;
 
+import org.apache.log4j.Logger;
 import person.Person;
 import repository.MyArrayList;
 
 import java.util.Comparator;
 
 public class MergeSorter implements ISorter {
+
+    private static final Logger logger = Logger.getLogger(MergeSorter.class);
 
     /**
      * sort Shella!!!!!!!!!!!
@@ -14,6 +17,7 @@ public class MergeSorter implements ISorter {
      */
     @Override
     public void sort(MyArrayList arr, Comparator<Person> sorter) {
+        logger.debug("method MergeSorter invoke with params: " + arr.toString() + "and " + sorter);
         int j;
         for (int gap = arr.Count() / 2; gap > 0; gap /= 2) {
             for (int i = gap; i < arr.Count(); i++) {
