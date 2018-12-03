@@ -38,7 +38,7 @@ public class MyArrayList {
      * full constructor for create object type MyArrayList
      */
     public MyArrayList() {
-        logger.debug("init repository for persons without params");
+//        logger.debug("init repository for persons without params");
         arrayPerson = new Person[0];
         count = 0;
         sorter = new BubleSorter();
@@ -49,7 +49,7 @@ public class MyArrayList {
      * @param array
      */
     public MyArrayList(Person[] array) {
-        logger.debug("init repository for persons with params");
+//        logger.debug("init repository for persons with params");
         arrayPerson = array;
         count = array.length;
         sorter = new BubleSorter();

@@ -45,7 +45,6 @@ public class Person {
      * @param lDate   - type LocalDate
      */
     public Person(String name, String surname, int gen, LocalDate lDate) {
-        logger.debug("init repository for person without params");
 
         idCounter++;
         id = idCounter;
