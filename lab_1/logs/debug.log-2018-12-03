@@ -1,0 +1,13 @@
+2018-12-03 20:01:18 [DEBUG] repository.MyArrayList(Count):63 - return count persons in list
+2018-12-03 20:01:24 [DEBUG] repository.MyArrayList(add):73 - add persons in repository
+2018-12-03 20:01:24 [DEBUG] repository.MyArrayList(resize):87 - resize repository capacity
+2018-12-03 20:01:25 [DEBUG] repository.MyArrayList(Count):63 - return count persons in list
+2018-12-03 20:01:25 [DEBUG] repository.MyArrayList(Count):63 - return count persons in list
+2018-12-03 20:01:25 [DEBUG] repository.MyArrayList(get):146 - return persons in repository for index object
+2018-12-03 20:01:25 [DEBUG] person.Person(getId):84 - return id
+2018-12-03 20:01:25 [DEBUG] person.Person(getName):102 - get name of person
+2018-12-03 20:01:25 [DEBUG] person.Person(getSurName):120 - get surName of person
+2018-12-03 20:01:25 [DEBUG] person.Person(getBirthday):138 - get date of Birthday of person
+2018-12-03 20:01:25 [DEBUG] person.Person(toGender):170 - convert gender to string
+2018-12-03 20:01:25 [DEBUG] person.Person(getAge):156 - get age of person
+2018-12-03 20:01:25 [DEBUG] repository.MyArrayList(Count):63 - return count persons in list

@@ -34,7 +34,7 @@ public class ConsoleMenus {
      * @see InputCorrect
      */
     InputCorrect inpputCorrect = new InputCorrect();
-    //    static int currentCount = -1;
+
 
     /**
      * Scanner in - console input/output

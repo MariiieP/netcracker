@@ -4,9 +4,10 @@ import Checkers.Checker;
 import Checkers.PersonAgeCheck;
 import Checkers.PersonNameCheck;
 import Checkers.PersonlDateCheck;
+import config.Iinjector;
+import config.Injector;
 import org.apache.log4j.Logger;
 import person.Person;
-import sorter.BubleSorter;
 import sorter.ISorter;
 
 import java.time.LocalDate;
@@ -32,16 +33,17 @@ public class MyArrayList {
      */
     private int count;
 
+    @Iinjector
     private ISorter sorter;
 
     /**
      * full constructor for create object type MyArrayList
      */
     public MyArrayList() {
-//        logger.debug("init repository for persons without params");
         arrayPerson = new Person[0];
         count = 0;
-        sorter = new BubleSorter();
+        (new Injector()).inject(this);
+//        sorter = new BubleSorter();
     }
 
     /**
@@ -49,10 +51,10 @@ public class MyArrayList {
      * @param array
      */
     public MyArrayList(Person[] array) {
-//        logger.debug("init repository for persons with params");
         arrayPerson = array;
         count = array.length;
-        sorter = new BubleSorter();
+        (new Injector()).inject(this);
+//        sorter = new BubleSorter();
     }
 
     /**
